@@ -9,14 +9,14 @@ import java.util.Random;
 public class Nim{
     private final int max_contents_num = 7;
     private int mount[] = new int[9];
-    private static StringBuilder sb;
+    // private static StringBuilder sb;
     private static boolean isYourTurn = true;
     private List<Integer> playerPane = new ArrayList<Integer>();
     private List<Integer> enemyPane = new ArrayList<Integer>();
     private static EasyEnemy enemy;
 
     Nim(){
-        sb = new StringBuilder();
+        // sb = new StringBuilder();
         make_mount_num();
 
     }
@@ -164,17 +164,17 @@ public class Nim{
     }
 
     // 入力値の結合
-    public static String modifyNum(int i){
-        if(i == -1){
-            sb.delete(0, sb.length());
-        }
-        else{
-            Integer integer = Integer.valueOf(i);
-            String str = integer.toString();
-            sb.append(str);
-        }
-        return sb.toString();
-    }
+    // public static String modifyNum(int i){
+    //     if(i == -1){
+    //         sb.delete(0, sb.length());
+    //     }
+    //     else{
+    //         Integer integer = Integer.valueOf(i);
+    //         String str = integer.toString();
+    //         sb.append(str);
+    //     }
+    //     return sb.toString();
+    // }
 
     // 山の座標番号, 送信された数
     public boolean subnum_mount(int i, int inNum){

@@ -31,7 +31,9 @@ public class GameController implements Initializable {
     private static List<TextFlow> paneList = new ArrayList<TextFlow>();
     
     @FXML private Button button;
-    @FXML private Button changer ;
+    @FXML private Button num1;
+    @FXML private Button num2;
+    @FXML private Button num3;
 
     @FXML private GridPane gridpane;
 
@@ -40,17 +42,18 @@ public class GameController implements Initializable {
     @FXML
     public void toStartGUI(ActionEvent event){showAlert2home();}
     public void exitGame(ActionEvent event){showAlert2exit();}
-    public void onClick0(ActionEvent event){displayNum(0);}
-    public void onClick1(ActionEvent event){displayNum(1);}
-    public void onClick2(ActionEvent event){displayNum(2);}
-    public void onClick3(ActionEvent event){displayNum(3);}
-    public void onClick4(ActionEvent event){displayNum(4);}
-    public void onClick5(ActionEvent event){displayNum(5);}
-    public void onClick6(ActionEvent event){displayNum(6);}
-    public void onClick7(ActionEvent event){displayNum(7);}
-    public void onClick8(ActionEvent event){displayNum(8);}
-    public void onClick9(ActionEvent event){displayNum(9);}
-    public void onClickClear(ActionEvent event){displayNum(-1);}
+    public void select1(ActionEvent event){
+        selectNumber(event);
+        displayNum(modified_num);
+    }
+    public void select2(ActionEvent event){
+        selectNumber(event);
+        displayNum(modified_num);
+    }
+    public void select3(ActionEvent event){
+        selectNumber(event);
+        displayNum(modified_num);
+    }
     public void onClickForDecide(ActionEvent event){
         inspectNum();
         if(flg_played){
@@ -175,13 +178,11 @@ public class GameController implements Initializable {
 
     // 画面に入力値を表示
     private void displayNum(int receved_num) {
-        String s = Nim.modifyNum(receved_num);
-        if(s.length() < 1){
+        if(receved_num < 1){
             displaying_number.setText("0");
             modified_num = 0;
         }else{
-            displaying_number.setText(s);
-            modified_num = Integer.parseInt(s);
+            displaying_number.setText("" + receved_num);
         }
     }
 
@@ -282,6 +283,18 @@ public class GameController implements Initializable {
         }
     }
 
+    public void inspectClickedNum() {
+        if(Nim.getIsYourTurn()){
+            int mount_num = check_toggle_and_num(checked_list);
+            
+            // 入力値が0, または, 山が選択されていないとき終了
+            if(modified_num != 0 && mount_num != -1){
+                flg_played = Main.nim.subnum_mount(mount_num, modified_num);
+            }
+            displayNum(-1); // 入力後数値の初期化
+        }
+    }
+
     // booleanを調べ、オン状態ならその番号を返す.(checked_listの判定に使ったが、カプセル化を意識)
     public int check_toggle_and_num(boolean[] b){
         for (int i = 0; i < b.length; i++) {
@@ -290,6 +303,12 @@ public class GameController implements Initializable {
         return -1;
     }
 
+    // numberボタンの数値選択処理
+    public void selectNumber(ActionEvent event){
+        Button b = (Button)event.getSource();
+        String s = b.getText();
+        modified_num = Integer.parseInt(s);
+    }
 
 
 }
