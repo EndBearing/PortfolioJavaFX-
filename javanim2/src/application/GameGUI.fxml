@@ -68,11 +68,6 @@
                   <FlowPane fx:id="flows" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </left>
             </BorderPane>
-            <TextFlow prefHeight="19.0" prefWidth="606.0" textAlignment="CENTER">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="error文章" textAlignment="CENTER" />
-               </children>
-            </TextFlow>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" style="-fx-background-color: gray;">
                <children>
                   <Button fx:id="num1" mnemonicParsing="false" onAction="#select1" prefWidth="60.0" text="1" />

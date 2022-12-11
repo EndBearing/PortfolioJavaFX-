@@ -11,8 +11,12 @@ public class EasyEnemy extends Enemy{
     }
 
     // 現在の山の中身を最大値にして、乱数で返す
-    public int choice_number(){
-        return new Random().nextInt(max_num)+1;
+    public int choice_number(int mount_num){
+        int num = new Random().nextInt(max_num)+1; //1-3の数
+        while(!can_sub(num, mount_num)){
+            num = new Random().nextInt(max_num)+1;
+        }
+        return num;
     }
 
     // 山を選択する
@@ -23,12 +27,21 @@ public class EasyEnemy extends Enemy{
         }
         return mount_num;
     }
-    // 山の中身が指定する数字以上あれば真を返す
+
+    // 中身があれば真を返す。
     public static boolean has_content(int i){
         int[] now = Main.nim.getMount();
         if(now[i] == 0){
             return false;
         }
         return true;
+    }
+
+    public static boolean can_sub(int select_num, int mount_num){
+        int[] now = Main.nim.getMount();
+        if(select_num <= now[mount_num]){
+            return true;
+        }
+        return false;
     }
 }

@@ -64,6 +64,7 @@ public class Nim{
         }else{
             isYourTurn = false;
         }
+        
     }
     
     // ターン遷移時処理
@@ -79,8 +80,8 @@ public class Nim{
     // 敵CPUの行動処理
     private void enemy_phase(){
         int mount_num = enemy.choice_mount();
-        int content_num = enemy.choice_number();
-        System.out.println(content_num);
+        int content_num = enemy.choice_number(mount_num);
+        // System.out.println("山のいち：" +mount_num + " 敵の入力値:" + content_num + "元の数:" + mount[mount_num]);
         subnum_mount(mount_num, content_num);
         next_phase();
     }
@@ -187,6 +188,7 @@ public class Nim{
             return false;
         }
         content = content - inNum;
+        GameController.addListView(setLogText(i, inNum));
         if(content == 0){
             if(isYourTurn == true){ //ターン制度が成功したとき、ここの条件式がisYourTurn = true でターン切り替えがうまくいかないバグが発生した
                 playerPane.add(i);
@@ -196,17 +198,20 @@ public class Nim{
             Main.gc.toggle_Pane_Color(i);
         }
         mount[i] = content;
-        GameController.addListView(setLogText(i, inNum));
-        System.out.println("list:" + GameController.getListView());
-        System.out.println(GameController.getNames() + ":names;");
-        // GameController.getNames().add("化け猫2from NIM");
-
+        
         Main.gc.display_all_mount_contents(mount);
         return true;
     }
 
     public String setLogText(int mount_num, int subnum){
-        return   "山の位置:" +mount_num + "; 引いた数:" + subnum; // 先行or後攻 + : + 山の位置 + : + 引かれた数;を表示予定
+        String turn = "";
+        if(isYourTurn){
+            turn = new String("あなた:");
+        }else if(!isYourTurn){
+            turn = new String("あいて:");
+
+        }
+        return turn + "山の位置:" +mount_num + "; 引いた数:" + subnum; // 先行or後攻 + : + 山の位置 + : + 引かれた数;を表示予定
     }
 
 

@@ -78,10 +78,10 @@ public class GameController implements Initializable {
         // logLists作成
         names = FXCollections.observableArrayList();
         listView = new ListView<String>(names);
+        names.clear();
         names.add("化け猫2");
         BP.setRight(listView);
 
-        System.out.println(getNames() + ":names;");
 
         // gridpane内コンポーネント作成
         int areanum = 0;
@@ -211,7 +211,11 @@ public class GameController implements Initializable {
             paneList.get(i).setStyle("");
             // テキストの初期化（選択時状態を解除）
             textList.get(i).setFill(Color.BLACK);
+
         }
+
+        // logのリセット
+        names.clear();
     }
 
 
