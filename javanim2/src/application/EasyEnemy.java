@@ -4,13 +4,14 @@ import java.util.Random;
 
 public class EasyEnemy extends Enemy{
     protected final String level = "easy";
+    private final int max_num = 3;
 
     public String getLevel(){
         return level;
     }
 
     // 現在の山の中身を最大値にして、乱数で返す
-    public int choice_number(int max_num){
+    public int choice_number(){
         return new Random().nextInt(max_num)+1;
     }
 

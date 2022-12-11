@@ -9,14 +9,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -29,7 +32,9 @@ public class GameController implements Initializable {
     private boolean[] checked_list = new boolean[9];
     private static List<Text> textList = new ArrayList<Text>();
     private static List<TextFlow> paneList = new ArrayList<TextFlow>();
-    
+    public static ObservableList<String> names;
+    public static ListView<String> listView;
+
     @FXML private Button button;
     @FXML private Button num1;
     @FXML private Button num2;
@@ -38,6 +43,8 @@ public class GameController implements Initializable {
     @FXML private GridPane gridpane;
 
     @FXML private Text displaying_number;
+
+    @FXML BorderPane BP;
 
     @FXML
     public void toStartGUI(ActionEvent event){showAlert2home();}
@@ -60,10 +67,22 @@ public class GameController implements Initializable {
             flg_played = false; // プレイヤー処理の終了
             Main.nim.next_phase();
         }
+        // setListView();　テストしてた
     }
+
+    
 
     @Override // FXML読み込み後の初期設定
     public void initialize(URL location, ResourceBundle resources){
+
+        // logLists作成
+        names = FXCollections.observableArrayList();
+        listView = new ListView<String>(names);
+        names.add("化け猫2");
+        BP.setRight(listView);
+
+        System.out.println(getNames() + ":names;");
+
         // gridpane内コンポーネント作成
         int areanum = 0;
         for(int x = 0; x < 3; x++){
@@ -92,7 +111,6 @@ public class GameController implements Initializable {
         //     }
         // });
 
-        // display_all_mount_contents(Nim.getMount());
     }
 
 
@@ -310,5 +328,14 @@ public class GameController implements Initializable {
         modified_num = Integer.parseInt(s);
     }
 
+    public static void addListView(String s) {      
+        names.add(s);
+    }
 
+    public static ListView<String> getListView(){
+        return listView;
+    }
+    public static ObservableList<String> getNames(){
+        return names;
+    }
 }

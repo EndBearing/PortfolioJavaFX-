@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ctrl.GameController;
+
 // this class is a GameMaster.
 // ex) use enemyAI Class
 public class Nim{
@@ -77,7 +79,8 @@ public class Nim{
     // 敵CPUの行動処理
     private void enemy_phase(){
         int mount_num = enemy.choice_mount();
-        int content_num = enemy.choice_number(mount[mount_num]);
+        int content_num = enemy.choice_number();
+        System.out.println(content_num);
         subnum_mount(mount_num, content_num);
         next_phase();
     }
@@ -193,11 +196,18 @@ public class Nim{
             Main.gc.toggle_Pane_Color(i);
         }
         mount[i] = content;
+        GameController.addListView(setLogText(i, inNum));
+        System.out.println("list:" + GameController.getListView());
+        System.out.println(GameController.getNames() + ":names;");
+        // GameController.getNames().add("化け猫2from NIM");
+
         Main.gc.display_all_mount_contents(mount);
         return true;
     }
 
-
+    public String setLogText(int mount_num, int subnum){
+        return   "山の位置:" +mount_num + "; 引いた数:" + subnum; // 先行or後攻 + : + 山の位置 + : + 引かれた数;を表示予定
+    }
 
 
 
