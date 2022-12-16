@@ -32,7 +32,7 @@ public class GameController implements Initializable {
     private boolean[] checked_list = new boolean[9];
     private static List<Text> textList = new ArrayList<Text>();
     private static List<TextFlow> paneList = new ArrayList<TextFlow>();
-    public static ObservableList<String> names;
+    public static ObservableList<String> gameRecord;
     public static ListView<String> listView;
 
     @FXML private Button button;
@@ -44,7 +44,7 @@ public class GameController implements Initializable {
 
     @FXML private Text displaying_number;
 
-    @FXML BorderPane BP;
+    @FXML private BorderPane BP;
 
     @FXML
     public void toStartGUI(ActionEvent event){showAlert2home();}
@@ -67,7 +67,6 @@ public class GameController implements Initializable {
             flg_played = false; // プレイヤー処理の終了
             Main.nim.next_phase();
         }
-        // setListView();　テストしてた
     }
 
     
@@ -76,10 +75,10 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
         // logLists作成
-        names = FXCollections.observableArrayList();
-        listView = new ListView<String>(names);
-        names.clear();
-        names.add("化け猫2");
+        gameRecord = FXCollections.observableArrayList();
+        listView = new ListView<String>(gameRecord);
+        gameRecord.clear();
+        gameRecord.add("化け猫2");
         BP.setRight(listView);
 
 
@@ -97,20 +96,11 @@ public class GameController implements Initializable {
             }
         }
 
-        // テキストにクリックイベントを設定
+        // マウント内数値の表示にクリックイベントを設定
         for(int i = 0; i < 9; i++){
             final int TEXT_NUM = i;  // get関数の仕様により、定数として格納
             textList.get(TEXT_NUM).setOnMouseClicked( event -> checked_list[TEXT_NUM] = toggleChecked(checked_list[TEXT_NUM], TEXT_NUM));
         }
-
-        // // 下記でも同じだが、上記はラムダ式による簡略を選んだ
-        // textField1.setOnMouseClicked( new EventHandler<MouseEvent>() {
-        //     @Override
-        //     public void handle(MouseEvent event) {
-        //         checked_list[a] = toggleChecked(checked_list[a], a)
-        //     }
-        // });
-
     }
 
 
@@ -127,6 +117,13 @@ public class GameController implements Initializable {
 
     public List<Text> getTextList(){
         return textList;
+    }
+
+    public static ListView<String> getListView(){
+        return listView;
+    }
+    public static ObservableList<String> getNames(){
+        return gameRecord;
     }
 
     //--------------------------------------------------
@@ -147,6 +144,7 @@ public class GameController implements Initializable {
         display_mount_content(checked_num);
         checked_list[checked_num] = false;
         }
+
         // 値設定
         if(isChecked == false){
             textList.get(listNum).setFill(Color.RED);
@@ -159,15 +157,14 @@ public class GameController implements Initializable {
     }
 
     // 空パネルの表示色変更
-    public boolean toggle_Pane_Color(int coordinate){
-       TextFlow tflow = paneList.get(coordinate);
+    public void add_Pane_Color_css(int coordinate){
+        TextFlow tflow = paneList.get(coordinate);
         boolean player = Nim.getIsYourTurn();
         if(player == false){
             tflow.setStyle( "-fx-background-color: green" );
         }else{
             tflow.setStyle( "-fx-background-color: blue" );
         }
-        return false;
     }
 
     // 山の中身を領域に表示する（全て表示）
@@ -196,11 +193,11 @@ public class GameController implements Initializable {
 
     // 画面に入力値を表示
     private void displayNum(int receved_num) {
-        if(receved_num < 1){
+        if(receved_num < 1){ // 入力値を間違いなく空にするとき-1による変更を可能にする目的
             displaying_number.setText("0");
             modified_num = 0;
         }else{
-            displaying_number.setText("" + receved_num);
+            displaying_number.setText(Integer.toString(receved_num));
         }
     }
 
@@ -211,13 +208,10 @@ public class GameController implements Initializable {
             paneList.get(i).setStyle("");
             // テキストの初期化（選択時状態を解除）
             textList.get(i).setFill(Color.BLACK);
-
         }
-
-        // logのリセット
-        names.clear();
+        // logの中身を削除
+        gameRecord.clear();
     }
-
 
     //--------------------------------------------------
     // ダイアログ表示
@@ -229,11 +223,11 @@ public class GameController implements Initializable {
     public void showAlert() {
 		Optional<ButtonType> result = showDialog("ゲームを開始します");
         if (result.get() == ButtonType.OK) {
-            Nim.setEnemy(0);
+            Nim.setEnemy(1); // テスト用に１にしてる。　0指定でeasy
         }else if(result.get() == ButtonType.CANCEL){
-            Nim.setEnemy(0);
+            Nim.setEnemy(1);
         }
-        display_all_mount_contents(Main.nim.getMount()); // 30
+        display_all_mount_contents(Main.nim.getMount());
     }
 
     // 勝敗表示のダイアログ表示
@@ -333,13 +327,7 @@ public class GameController implements Initializable {
     }
 
     public static void addListView(String s) {      
-        names.add(s);
+        gameRecord.add(s);
     }
 
-    public static ListView<String> getListView(){
-        return listView;
-    }
-    public static ObservableList<String> getNames(){
-        return names;
-    }
 }

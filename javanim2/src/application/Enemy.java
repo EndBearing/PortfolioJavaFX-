@@ -1,7 +1,7 @@
 package application;
 
 public class Enemy {
-    protected String level;
+    protected String level = "non";
 
     public String getLevel(){
         return level;
